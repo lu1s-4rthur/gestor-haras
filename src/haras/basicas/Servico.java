@@ -1,13 +1,14 @@
 package haras.basicas;
 
 public class Servico {
+    private static int contador = 1;
     private int id;
     private String tipo;
     private String descricao;
     private double valor;
 
-    public Servico(int id, String tipo, String descricao, double valor) {
-        this.id = id;
+    public Servico(String tipo, String descricao, double valor) {
+        this.id = contador++;
         this.tipo = tipo;
         this.descricao = descricao;
         this.valor = valor;

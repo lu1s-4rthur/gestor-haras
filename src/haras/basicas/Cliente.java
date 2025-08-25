@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente extends Pessoa {
+    private static int contador = 1;
     private int id;
     private List<Contrato> contratos;
 
-    public Cliente(String nome, String endereco, String telefone, int id) {
+    public Cliente(String nome, String endereco, String telefone) {
         super(nome, endereco, telefone);
-        this.id = id;
+        this.id = contador++;
         this.contratos = new ArrayList<>();
     }
 
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }

@@ -1,6 +1,7 @@
 package haras.basicas;
 
 public class Animal {
+    private static int contador = 1;
     private int id;
     private String nome;
     private String raca;
@@ -8,15 +9,17 @@ public class Animal {
     private String cor;
     private int idade;
     private String estadoSaude;
+    private boolean reprodutor;
 
-    public Animal(int id, String nome, String raca, String genero, String cor, int idade, String estadoSaude) {
-        this.id = id;
+    public Animal(String nome, String raca, String genero, String cor, int idade, String estadoSaude) {
+        this.id = contador++;
         this.nome = nome;
         this.raca = raca;
         this.genero = genero;
         this.cor = cor;
         this.idade = idade;
         this.estadoSaude = estadoSaude;
+        this.reprodutor = false;
     }
 
     public int getId() {
@@ -73,6 +76,14 @@ public class Animal {
 
     public void setEstadoSaude(String estadoSaude) {
         this.estadoSaude = estadoSaude;
+    }
+
+    public boolean isReprodutor() {
+        return reprodutor;
+    }
+
+    public void setReprodutor(boolean reprodutor) {
+        this.reprodutor = reprodutor;
     }
 
     @Override
