@@ -2,7 +2,9 @@ package haras.basicas;
 
 import java.util.Date;
 
-public class Contrato {
+import java.io.Serializable;
+
+public class Contrato implements Serializable {
     private static int contador = 1;
     private int id;
     private Cliente cliente;
@@ -87,15 +89,7 @@ public class Contrato {
 
     @Override
     public String toString() {
-        return "Contrato{" +
-                "id=" + id +
-                ", cliente=" + cliente +
-                ", animal=" + animal +
-                ", servico=" + servico +
-                ", dataInicio=" + dataInicio +
-                ", dataFim=" + dataFim +
-                ", status='" + status + '\'' +
-                '}';
+        return "Contrato{id=" + id + ", cliente='" + cliente.getNome() + "', animal='" + animal.getNome() + "', servico='" + servico.getTipo() + "', status='" + status + "'}";
     }
 
 }

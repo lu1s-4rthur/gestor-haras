@@ -2,6 +2,7 @@ package haras.basicas;
 
 import java.util.Date;
 
+
 public class Colaborador extends Pessoa {
     private static int contador = 1;
     private int id;
@@ -46,13 +47,6 @@ public class Colaborador extends Pessoa {
 
     @Override
     public String toString() {
-        return "{" +
-                "nome='" + getNome() + '\'' +
-                ", endereco='" + getEndereco() + '\'' +
-                ", telefone='" + getTelefone() + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", admissao=" + admissao +
-                ", formacao='" + formacao + '\'' +
-                '}';
+        return "Colaborador{id=" + id + ", nome='" + getNome() + "', cargo='" + cargo + "'}";
     }
 }

@@ -1,6 +1,8 @@
 package haras.basicas;
 
-public class Servico {
+import java.io.Serializable;
+
+public class Servico implements Serializable {
     private static int contador = 1;
     private int id;
     private String tipo;
@@ -48,11 +50,6 @@ public class Servico {
 
     @Override
     public String toString() {
-        return "Servico{" +
-                "id=" + id +
-                ", tipo='" + tipo + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", valor=" + valor +
-                '}';
+        return "Servico{id=" + id + ", tipo='" + tipo + "', valor=" + valor + "}";
     }
 }

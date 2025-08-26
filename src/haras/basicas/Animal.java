@@ -1,6 +1,8 @@
 package haras.basicas;
 
-public class Animal {
+import java.io.Serializable;
+
+public class Animal implements Serializable {
     private static int contador = 1;
     private int id;
     private String nome;
@@ -88,15 +90,7 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "Animal{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", raca='" + raca + '\'' +
-                ", genero='" + genero + '\'' +
-                ", cor='" + cor + '\'' +
-                ", idade=" + idade +
-                ", estadoSaude='" + estadoSaude + '\'' +
-                '}';
+        return "Animal{id=" + id + ", nome='" + nome + "', raca='" + raca + "', genero='" + genero + "', cor='" + cor + "', idade=" + idade + "}";
     }
 
 }

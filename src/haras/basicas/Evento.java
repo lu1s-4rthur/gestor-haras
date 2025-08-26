@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Evento {
+import java.io.Serializable;
+
+public class Evento implements Serializable {
     public List<Animal> getParticipantes() {
         return participantes;
     }
@@ -57,12 +59,6 @@ public class Evento {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", tipo='" + tipo + '\'' +
-                ", data=" + data +
-                ", local='" + local + '\'' +
-                ", participantes=" + participantes +
-                '}';
+        return "Evento{id=" + id + ", tipo='" + tipo + "', data=" + data + ", local='" + local + "', participantes=" + participantes.size() + "}";
     }
 }

@@ -3,6 +3,7 @@ package haras.basicas;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Cliente extends Pessoa {
     private static int contador = 1;
     private int id;
@@ -36,13 +37,7 @@ public class Cliente extends Pessoa {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", nome='" + getNome() + '\'' +
-                ", endereco='" + getEndereco() + '\'' +
-                ", telefone='" + getTelefone() + '\'' +
-                ", contratos=" + contratos +
-                '}';
+        return "Cliente{id=" + id + ", nome='" + getNome() + "', endereco='" + getEndereco() + "', telefone='" + getTelefone() + "'}";
     }
 
 }
