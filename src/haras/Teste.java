@@ -6,7 +6,7 @@ import haras.exception.HarasException;
 
 import java.util.Date;
 
-public class TesteSistema {
+public class Teste {
 
     // ==== Testes de cada funcionalidade ====
     private static void testarCadastroAnimal(GerenciadorAnimal ga) throws HarasException {
@@ -39,8 +39,8 @@ public class TesteSistema {
     }
 
     private static void testarContrato(GerenciadorContrato gct, Cliente cliente, Animal animal, Servico servico) throws HarasException {
-        Date inicio = new Date(System.currentTimeMillis() + 86400000); // amanhã
-        Date fim = new Date(System.currentTimeMillis() + 86400000 * 10); // daqui 10 dias
+        Date inicio = new Date(System.currentTimeMillis() + 86400000);
+        Date fim = new Date(System.currentTimeMillis() + 86400000 * 10);
         Contrato contrato = new Contrato(cliente, animal, servico, inicio, fim, "Ativo");
         gct.cadastrarContrato(contrato);
 
@@ -67,18 +67,16 @@ public class TesteSistema {
 
     private static void testarTreinamento(GerenciadorTreinamento gt, Animal animal) throws HarasException {
         Treinador treinador = new Treinador("Carlos", "Rua dos Treinadores, 77", "888777666",
-                "Treinador", new Date(), "Educação Física");
+                "Treinador", new Date(), "Zootecnia");
 
-        Treinamento treinamento = new Treinamento(animal, treinador, new Date(), "Salto", "Ótimo desempenho");
+        Treinamento treinamento = new Treinamento(animal, treinador, new Date(), "Vaquejada", "Ótimo desempenho");
         gt.registrarTreinamento(treinamento);
 
         System.out.println("Treinamentos cadastrados: " + gt.listarTreinamentos());
     }
 
-    // ==== MAIN ====
     public static void main(String[] args) {
         try {
-            // Gerenciadores
             GerenciadorAnimal ga = new GerenciadorAnimal();
             GerenciadorCliente gc = new GerenciadorCliente();
             GerenciadorColaborador gcol = new GerenciadorColaborador();
@@ -89,12 +87,12 @@ public class TesteSistema {
             GerenciadorAtendimentoVeterinario gav = new GerenciadorAtendimentoVeterinario();
             GerenciadorTreinamento gt = new GerenciadorTreinamento();
 
-            // Executando os testes
+            
             testarCadastroAnimal(ga);
             testarCadastroCliente(gc);
             testarCadastroColaborador(gcol);
 
-            // Recupera entidades para próximos testes
+            
             Animal animal = ga.listarAnimais().get(0);
             Cliente cliente = gc.listarClientes().get(0);
 
@@ -113,3 +111,4 @@ public class TesteSistema {
         }
     }
 }
+ 
