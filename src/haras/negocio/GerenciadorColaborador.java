@@ -58,4 +58,14 @@ public class GerenciadorColaborador {
     public List<Colaborador> listarColaboradores() {
         return new ArrayList<>(colaboradores);
     }
+
+    // ===== CSV helpers =====
+    public void exportarCsv() throws IOException {
+        repositorio.salvarColaboradoresCSV(colaboradores);
+    }
+
+    public void importarCsv() throws IOException {
+        colaboradores = repositorio.carregarColaboradoresCSV();
+        salvar();
+    }
 }

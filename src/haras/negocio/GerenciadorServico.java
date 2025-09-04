@@ -71,4 +71,14 @@ public class GerenciadorServico {
     public List<Servico> listarServicos() {
         return new ArrayList<>(servicos);
     }
+
+    // ===== CSV helpers =====
+    public void exportarCsv() throws IOException {
+        repositorio.salvarServicosCSV(servicos);
+    }
+
+    public void importarCsv() throws IOException {
+        servicos = repositorio.carregarServicosCSV();
+        salvar();
+    }
 }

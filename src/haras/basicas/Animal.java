@@ -88,6 +88,12 @@ public class Animal implements Serializable {
         this.reprodutor = reprodutor;
     }
 
+    public static void ajustarContadorAPartirDoMaximo(int maxId) {
+        if (maxId + 1 > contador) {
+            contador = maxId + 1;
+        }
+    }
+
     @Override
     public String toString() {
         return "Animal{id=" + id + ", nome='" + nome + "', raca='" + raca + "', genero='" + genero + "', cor='" + cor + "', idade=" + idade + "}";

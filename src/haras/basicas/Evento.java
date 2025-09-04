@@ -61,4 +61,10 @@ public class Evento implements Serializable {
     public String toString() {
         return "Evento{id=" + id + ", tipo='" + tipo + "', data=" + data + ", local='" + local + "', participantes=" + participantes.size() + "}";
     }
+
+    public static void ajustarContadorAPartirDoMaximo(int maxId) {
+        if (maxId + 1 > contador) {
+            contador = maxId + 1;
+        }
+    }
 }

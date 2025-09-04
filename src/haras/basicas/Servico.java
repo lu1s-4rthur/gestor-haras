@@ -52,4 +52,10 @@ public class Servico implements Serializable {
     public String toString() {
         return "Servico{id=" + id + ", tipo='" + tipo + "', valor=" + valor + "}";
     }
+
+    public static void ajustarContadorAPartirDoMaximo(int maxId) {
+        if (maxId + 1 > contador) {
+            contador = maxId + 1;
+        }
+    }
 }

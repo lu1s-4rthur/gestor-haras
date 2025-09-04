@@ -82,4 +82,10 @@ public class Treinamento implements Serializable {
                 ", observacoes='" + observacoes + '\'' +
                 '}';
     }
+
+    public static void ajustarContadorAPartirDoMaximo(int maxId) {
+        if (maxId + 1 > contador) {
+            contador = maxId + 1;
+        }
+    }
 }

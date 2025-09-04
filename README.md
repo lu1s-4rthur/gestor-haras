@@ -1,18 +1,56 @@
-## Getting Started
+# GestaoHaras
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Executando os testes básicos
 
-## Folder Structure
+Execute a classe `haras.Teste` para realizar testes rápidos das funcionalidades de negócio.
 
-The workspace contains two folders by default, where:
+## Persistência em CSV com OpenCSV
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+O sistema agora suporta salvar e carregar dados em CSV (além da serialização em `.dat`).
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+### Agora com Maven
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+O projeto foi convertido para Maven. Não é necessário baixar JARs manualmente.
 
-## Dependency Management
+#### Comandos Maven (Windows/PowerShell)
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+```powershell
+# Compilar
+mvn -q clean compile
+
+# Executar a UI de Console
+mvn -q exec:java -Dexec.mainClass="haras.ui.ConsoleApp"
+
+# (Opcional) Executar a classe de testes existente
+mvn -q exec:java -Dexec.mainClass="haras.Teste"
+
+# Gerar JAR
+mvn -q package
+```
+
+Se usar VS Code/Eclipse, importe como projeto Maven (há `pom.xml`).
+
+### Arquivos CSV gerados
+
+Os CSVs são gravados em `dados/data/`:
+- `animais.csv`
+- `clientes.csv`
+
+Na UI de console, use as opções “Exportar CSV” ou “Importar CSV”.
+
+## Interface de Usuário (Console)
+
+Foi adicionada a classe `haras.ui.ConsoleApp` com menu para:
+- Cadastrar/listar/excluir Animais e Clientes
+- Exportar/Importar CSV de Animais e Clientes
+
+## Próximos Passos (sugestão)
+
+- Replicar CSV para: Serviços, Contratos, Eventos, Atendimentos, Treinamentos e Colaboradores.
+- Melhorar mensagens de erro e validações.
+
+## Preparando a Entrega
+
+1. Gere um `.zip` contendo apenas a pasta `src/` com os `.java`.
+2. Confirme que binários (`bin/`), dados (`dados/`) e libs não estão dentro do zip.
+3. Inclua neste README as instruções acima (dependências e execução).

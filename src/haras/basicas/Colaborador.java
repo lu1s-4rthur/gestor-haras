@@ -23,6 +23,9 @@ public class Colaborador extends Pessoa {
     public int getId() {
         return id;
     }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCargo() {
         return cargo;
@@ -48,5 +51,11 @@ public class Colaborador extends Pessoa {
     @Override
     public String toString() {
         return "Colaborador{id=" + id + ", nome='" + getNome() + "', cargo='" + cargo + "'}";
+    }
+
+    public static void ajustarContadorAPartirDoMaximo(int maxId) {
+        if (maxId + 1 > contador) {
+            contador = maxId + 1;
+        }
     }
 }

@@ -47,4 +47,14 @@ public class GerenciadorTreinamento {
         return removido;
     }
 
+    // ===== CSV helpers =====
+    public void exportarCsv() throws IOException {
+        repositorio.salvarTreinamentosCSV(treinamentos);
+    }
+
+    public void importarCsv(java.util.function.Function<Integer, haras.basicas.Animal> resolveAnimal,
+                            java.util.function.Function<Integer, haras.basicas.Treinador> resolveTreinador) throws IOException {
+        treinamentos = repositorio.carregarTreinamentosCSV(resolveAnimal, resolveTreinador);
+        salvar();
+    }
 }

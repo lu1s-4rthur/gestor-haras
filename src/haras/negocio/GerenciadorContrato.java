@@ -58,4 +58,16 @@ public class GerenciadorContrato {
     public List<Contrato> listarContratos() {
         return contratos;
     }
+
+    // ===== CSV helpers =====
+    public void exportarCsv() throws IOException {
+        repositorio.salvarContratosCSV(contratos);
+    }
+
+    public void importarCsv(java.util.function.Function<Integer, haras.basicas.Cliente> resolveCliente,
+                            java.util.function.Function<Integer, haras.basicas.Animal> resolveAnimal,
+                            java.util.function.Function<Integer, haras.basicas.Servico> resolveServico) throws IOException {
+        contratos = repositorio.carregarContratosCSV(resolveCliente, resolveAnimal, resolveServico);
+        salvar();
+    }
 }

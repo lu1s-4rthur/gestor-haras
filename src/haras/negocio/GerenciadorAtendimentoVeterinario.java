@@ -47,4 +47,14 @@ public class GerenciadorAtendimentoVeterinario {
         return removido;
     }
 
+    // ===== CSV helpers =====
+    public void exportarCsv() throws IOException {
+        repositorio.salvarAtendimentosCSV(atendimentos);
+    }
+
+    public void importarCsv(java.util.function.Function<Integer, haras.basicas.Animal> resolveAnimal,
+                            java.util.function.Function<Integer, haras.basicas.Veterinario> resolveVet) throws IOException {
+        atendimentos = repositorio.carregarAtendimentosCSV((id1, id2) -> resolveVet.apply(id1), resolveAnimal);
+        salvar();
+    }
 }

@@ -60,4 +60,13 @@ public class GerenciadorCliente {
     public List<Cliente> listarClientes() {
         return clientes;
     }
+
+    public void exportarCsv() throws IOException {
+        repositorio.salvarClientesCSV(clientes);
+    }
+
+    public void importarCsv() throws IOException {
+        clientes = repositorio.carregarClientesCSV();
+        salvar();
+    }
 }

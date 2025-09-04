@@ -58,4 +58,13 @@ public class GerenciadorAnimal {
     public List<Animal> listarAnimais() {
         return animais;
     }
+
+    public void exportarCsv() throws IOException {
+        repositorio.salvarAnimaisCSV(animais);
+    }
+
+    public void importarCsv() throws IOException {
+        animais = repositorio.carregarAnimaisCSV();
+        salvar();
+    }
 }

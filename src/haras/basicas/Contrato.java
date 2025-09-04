@@ -92,4 +92,10 @@ public class Contrato implements Serializable {
         return "Contrato{id=" + id + ", cliente='" + cliente.getNome() + "', animal='" + animal.getNome() + "', servico='" + servico.getTipo() + "', status='" + status + "'}";
     }
 
+    public static void ajustarContadorAPartirDoMaximo(int maxId) {
+        if (maxId + 1 > contador) {
+            contador = maxId + 1;
+        }
+    }
+
 }

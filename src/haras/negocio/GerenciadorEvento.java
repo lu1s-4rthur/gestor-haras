@@ -77,4 +77,14 @@ public class GerenciadorEvento {
     public List<Evento> listarEventos() {
         return historicoEventos;
     }
+
+    // ===== CSV helpers =====
+    public void exportarCsv() throws IOException {
+        repositorio.salvarEventosCSV(historicoEventos);
+    }
+
+    public void importarCsv(java.util.function.Function<Integer, Animal> resolveAnimal) throws IOException {
+        historicoEventos = repositorio.carregarEventosCSV(resolveAnimal);
+        salvar();
+    }
 }

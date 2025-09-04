@@ -40,4 +40,10 @@ public class Cliente extends Pessoa {
         return "Cliente{id=" + id + ", nome='" + getNome() + "', endereco='" + getEndereco() + "', telefone='" + getTelefone() + "'}";
     }
 
+    public static void ajustarContadorAPartirDoMaximo(int maxId) {
+        if (maxId + 1 > contador) {
+            contador = maxId + 1;
+        }
+    }
+
 }
