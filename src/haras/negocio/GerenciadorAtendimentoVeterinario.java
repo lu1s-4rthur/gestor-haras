@@ -8,6 +8,8 @@ import haras.exception.HarasException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.opencsv.exceptions.CsvValidationException;
+
 public class GerenciadorAtendimentoVeterinario {
     private RepositorioAtendimentoVeterinario repositorio = new RepositorioAtendimentoVeterinario();
     private List<AtendimentoVeterinario> atendimentos;
@@ -53,7 +55,7 @@ public class GerenciadorAtendimentoVeterinario {
     }
 
     public void importarCsv(java.util.function.Function<Integer, haras.basicas.Animal> resolveAnimal,
-                            java.util.function.Function<Integer, haras.basicas.Veterinario> resolveVet) throws IOException {
+                            java.util.function.Function<Integer, haras.basicas.Veterinario> resolveVet) throws IOException, CsvValidationException, NumberFormatException {
         atendimentos = repositorio.carregarAtendimentosCSV((id1, id2) -> resolveVet.apply(id1), resolveAnimal);
         salvar();
     }

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.opencsv.exceptions.CsvValidationException;
+
 public class GerenciadorEvento {
     private RepositorioEvento repositorio = new RepositorioEvento();
 
@@ -83,7 +85,7 @@ public class GerenciadorEvento {
         repositorio.salvarEventosCSV(historicoEventos);
     }
 
-    public void importarCsv(java.util.function.Function<Integer, Animal> resolveAnimal) throws IOException {
+    public void importarCsv(java.util.function.Function<Integer, Animal> resolveAnimal) throws IOException, CsvValidationException, NumberFormatException {
         historicoEventos = repositorio.carregarEventosCSV(resolveAnimal);
         salvar();
     }

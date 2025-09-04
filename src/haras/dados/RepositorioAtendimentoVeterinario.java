@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 public class RepositorioAtendimentoVeterinario {
     private String arquivo = "dados/data/atendimentos.dat";
@@ -50,7 +51,7 @@ public class RepositorioAtendimentoVeterinario {
     }
 
     public List<AtendimentoVeterinario> carregarAtendimentosCSV(BiFunction<Integer,Integer, Veterinario> resolveVetByIds,
-                                                                java.util.function.Function<Integer, Animal> resolveAnimal) throws IOException {
+                                                                java.util.function.Function<Integer, Animal> resolveAnimal) throws IOException, CsvValidationException, NumberFormatException {
         List<AtendimentoVeterinario> atendimentos = new ArrayList<>();
         File file = new File(arquivoCsv);
         if (!file.exists()) return atendimentos;

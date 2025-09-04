@@ -20,7 +20,7 @@ public class GerenciadorReproducao {
             throw new HarasException("A mãe " + mae.getNome() + " não é uma reprodutora.");
         }
 
-        Reproducao reproducao = new Reproducao(descricao, descricao, valor, pai, mae);
+        Reproducao reproducao = new Reproducao(tipo, valor, pai, mae);
         historicoReproducoes.add(reproducao);
 
 

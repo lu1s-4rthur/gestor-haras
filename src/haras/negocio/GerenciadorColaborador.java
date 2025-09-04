@@ -7,6 +7,8 @@ import haras.exception.HarasException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.opencsv.exceptions.CsvValidationException;
+
 public class GerenciadorColaborador {
     private RepositorioColaborador repositorio = new RepositorioColaborador();
     private List<Colaborador> colaboradores;
@@ -64,7 +66,7 @@ public class GerenciadorColaborador {
         repositorio.salvarColaboradoresCSV(colaboradores);
     }
 
-    public void importarCsv() throws IOException {
+    public void importarCsv() throws IOException, CsvValidationException, NumberFormatException {
         colaboradores = repositorio.carregarColaboradoresCSV();
         salvar();
     }

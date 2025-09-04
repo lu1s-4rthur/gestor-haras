@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 
 public class RepositorioAnimal {
@@ -47,7 +48,7 @@ private String arquivoCsv = "dados/data/animais.csv";
         }
     }
 
-    public List<Animal> carregarAnimaisCSV() throws IOException {
+    public List<Animal> carregarAnimaisCSV() throws IOException, CsvValidationException, NumberFormatException {
         List<Animal> animais = new ArrayList<>();
         File file = new File(arquivoCsv);
         if (!file.exists()) {

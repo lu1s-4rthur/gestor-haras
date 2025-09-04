@@ -1,25 +1,14 @@
 package haras.ui;
 
 import haras.exception.HarasException;
-import haras.negocio.GerenciadorAnimal;
-import haras.negocio.GerenciadorCliente;
-import haras.negocio.GerenciadorServico;
-import haras.negocio.GerenciadorColaborador;
-import haras.negocio.GerenciadorContrato;
-import haras.negocio.GerenciadorEvento;
-import haras.negocio.GerenciadorAtendimentoVeterinario;
-import haras.negocio.GerenciadorTreinamento;
-import haras.negocio.GerenciadorReproducao;
-import haras.basicas.Animal;
-import haras.basicas.Cliente;
-import haras.basicas.Servico;
-import haras.basicas.Colaborador;
-import haras.basicas.Baia;
-import haras.negocio.GerenciadorBaia;
+import haras.negocio.*;
+import haras.basicas.*;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+
+import com.opencsv.exceptions.CsvValidationException;
 
 public class ConsoleApp {
     private final GerenciadorAnimal gerenciadorAnimal;
@@ -30,7 +19,6 @@ public class ConsoleApp {
     private final GerenciadorEvento gerenciadorEvento;
     private final GerenciadorAtendimentoVeterinario gerenciadorAtendimento;
     private final GerenciadorTreinamento gerenciadorTreinamento;
-    private final GerenciadorReproducao gerenciadorReproducao;
 
     public ConsoleApp() {
         this.gerenciadorAnimal = new GerenciadorAnimal();
@@ -41,10 +29,10 @@ public class ConsoleApp {
         this.gerenciadorEvento = new GerenciadorEvento();
         this.gerenciadorAtendimento = new GerenciadorAtendimentoVeterinario();
         this.gerenciadorTreinamento = new GerenciadorTreinamento();
-        this.gerenciadorReproducao = new GerenciadorReproducao();
+        new GerenciadorReproducao();
     }
 
-    public void iniciar() {
+    public void iniciar() throws CsvValidationException, NumberFormatException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("=== Gestao Haras ===");
@@ -57,10 +45,9 @@ public class ConsoleApp {
             System.out.println("7. Gerenciar Atendimentos Veterinários");
             System.out.println("8. Gerenciar Treinamentos");
             System.out.println("9. Gerenciar Baias");
-            System.out.println("10. Reprodução (RN2)");
-            System.out.println("5. Exportar CSV (todos)");
-            System.out.println("6. Importar CSV (todos)");
-            System.out.println("11. Relatórios");
+            System.out.println("10. Relatórios");
+            System.out.println("11. Exportar todos dados para CSV");
+            System.out.println("12. Importar todos dados de CSV");
             System.out.println("0. Sair");
             System.out.print("Escolha: ");
             String escolha = scanner.nextLine();
@@ -94,16 +81,13 @@ public class ConsoleApp {
                         menuBaias(scanner);
                         break;
                     case "10":
-                        menuReproducao(scanner);
-                        break;
-                    case "11":
                         menuRelatorios(scanner);
                         break;
-                    case "12":
+                    case "11":
                         exportarTodosCsv();
                         System.out.println("CSV exportado em dados/data.");
                         break;
-                    case "13":
+                    case "12":
                         importarTodosCsv();
                         System.out.println("CSV importado de dados/data.");
                         break;
@@ -131,36 +115,38 @@ public class ConsoleApp {
         gerenciadorTreinamento.exportarCsv();
     }
 
-    private void importarTodosCsv() throws IOException {
-        // Base entities first
+    private void importarTodosCsv() throws IOException, CsvValidationException, NumberFormatException {
         gerenciadorAnimal.importarCsv();
         gerenciadorCliente.importarCsv();
         gerenciadorServico.importarCsv();
         gerenciadorColaborador.importarCsv();
-        // Ajustar contadores (RN4)
+
         haras.basicas.Animal.ajustarContadorAPartirDoMaximo(
-            gerenciadorAnimal.listarAnimais().stream().mapToInt(Animal::getId).max().orElse(0));
+                gerenciadorAnimal.listarAnimais().stream().mapToInt(Animal::getId).max().orElse(0));
         haras.basicas.Cliente.ajustarContadorAPartirDoMaximo(
-            gerenciadorCliente.listarClientes().stream().mapToInt(Cliente::getId).max().orElse(0));
+                gerenciadorCliente.listarClientes().stream().mapToInt(Cliente::getId).max().orElse(0));
         haras.basicas.Servico.ajustarContadorAPartirDoMaximo(
-            gerenciadorServico.listarServicos().stream().mapToInt(Servico::getId).max().orElse(0));
+                gerenciadorServico.listarServicos().stream().mapToInt(Servico::getId).max().orElse(0));
         haras.basicas.Colaborador.ajustarContadorAPartirDoMaximo(
-            gerenciadorColaborador.listarColaboradores().stream().mapToInt(Colaborador::getId).max().orElse(0));
-        // Entities with relations using resolvers by ID
-        gerenciadorEvento.importarCsv(id -> gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == id).findFirst().orElse(null));
+                gerenciadorColaborador.listarColaboradores().stream().mapToInt(Colaborador::getId).max().orElse(0));
+
+        gerenciadorEvento.importarCsv(
+                id -> gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == id).findFirst().orElse(null));
         gerenciadorContrato.importarCsv(
-            id -> gerenciadorCliente.listarClientes().stream().filter(c -> c.getId() == id).findFirst().orElse(null),
-            id -> gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == id).findFirst().orElse(null),
-            id -> gerenciadorServico.listarServicos().stream().filter(s -> s.getId() == id).findFirst().orElse(null)
-        );
+                id -> gerenciadorCliente.listarClientes().stream().filter(c -> c.getId() == id).findFirst()
+                        .orElse(null),
+                id -> gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == id).findFirst().orElse(null),
+                id -> gerenciadorServico.listarServicos().stream().filter(s -> s.getId() == id).findFirst()
+                        .orElse(null));
         gerenciadorAtendimento.importarCsv(
-            id -> gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == id).findFirst().orElse(null),
-            id -> (haras.basicas.Veterinario) gerenciadorColaborador.listarColaboradores().stream().filter(c -> c.getId() == id && c instanceof haras.basicas.Veterinario).findFirst().orElse(null)
-        );
+                id -> gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == id).findFirst().orElse(null),
+                id -> (haras.basicas.Veterinario) gerenciadorColaborador.listarColaboradores().stream()
+                        .filter(c -> c.getId() == id && c instanceof haras.basicas.Veterinario).findFirst()
+                        .orElse(null));
         gerenciadorTreinamento.importarCsv(
-            id -> gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == id).findFirst().orElse(null),
-            id -> (haras.basicas.Treinador) gerenciadorColaborador.listarColaboradores().stream().filter(c -> c.getId() == id && c instanceof haras.basicas.Treinador).findFirst().orElse(null)
-        );
+                id -> gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == id).findFirst().orElse(null),
+                id -> (haras.basicas.Treinador) gerenciadorColaborador.listarColaboradores().stream()
+                        .filter(c -> c.getId() == id && c instanceof haras.basicas.Treinador).findFirst().orElse(null));
     }
 
     private void menuAnimais(Scanner scanner) throws HarasException {
@@ -261,6 +247,26 @@ public class ConsoleApp {
         }
     }
 
+    private void menuReproducao(Scanner scanner) {
+        System.out.println("=== Reprodução ===");
+        System.out.print("ID Pai (animal): ");
+        int paiId = Integer.parseInt(scanner.nextLine());
+        System.out.print("ID Mãe (animal): ");
+        int maeId = Integer.parseInt(scanner.nextLine());
+        Animal pai = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == paiId).findFirst()
+                .orElse(null);
+        Animal mae = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == maeId).findFirst()
+                .orElse(null);
+        if (pai == null || mae == null) {
+            System.out.println("Animais inválidos.");
+            return;
+        }
+        if (!pai.isReprodutor() || !mae.isReprodutor()) {
+            System.out.println("Reprodução apenas para animais marcados como reprodutores.");
+            return;
+        }
+    }
+
     private void menuServicos(Scanner scanner) throws HarasException {
         System.out.println("=== Serviços ===");
         System.out.println("1. Cadastrar");
@@ -273,13 +279,14 @@ public class ConsoleApp {
             case "1":
                 System.out.print("Tipo: ");
                 String tipo = scanner.nextLine();
-                System.out.print("Descrição: ");
-                String desc = scanner.nextLine();
+                if ("Reproducao".equalsIgnoreCase(tipo) || "Reprodução".equalsIgnoreCase(tipo)) {
+                    menuReproducao(scanner);
+                }
                 System.out.print("Valor: ");
                 double valor = Double.parseDouble(scanner.nextLine());
-                Servico s = new Servico(tipo, desc, valor);
+                Servico s = new Servico(tipo, valor);
                 gerenciadorServico.cadastrarServico(s);
-                System.out.println("Cadastrado com ID: " + s.getId());
+                System.out.println("Servico cadastrado com ID: " + s.getId());
                 break;
             case "2":
                 List<Servico> servicos = gerenciadorServico.listarServicos();
@@ -290,11 +297,9 @@ public class ConsoleApp {
                 int idEdit = Integer.parseInt(scanner.nextLine());
                 System.out.print("Novo tipo: ");
                 String nTipo = scanner.nextLine();
-                System.out.print("Nova descrição: ");
-                String nDesc = scanner.nextLine();
                 System.out.print("Novo valor: ");
                 double nValor = Double.parseDouble(scanner.nextLine());
-                Servico sEdit = new Servico(nTipo, nDesc, nValor);
+                Servico sEdit = new Servico(nTipo, nValor);
                 sEdit.setId(idEdit);
                 gerenciadorServico.editarServico(sEdit);
                 System.out.println("Editado.");
@@ -396,7 +401,12 @@ public class ConsoleApp {
                 String tipo = scanner.nextLine();
                 System.out.print("Data (yyyy-MM-dd): ");
                 java.util.Date data;
-                try { data = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine()); } catch (java.text.ParseException e) { System.out.println("Data inválida."); return; }
+                try {
+                    data = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine());
+                } catch (java.text.ParseException e) {
+                    System.out.println("Data inválida.");
+                    return;
+                }
                 System.out.print("Local: ");
                 String local = scanner.nextLine();
                 haras.basicas.Evento e = new haras.basicas.Evento(tipo, data, local);
@@ -409,12 +419,20 @@ public class ConsoleApp {
             case "3":
                 System.out.print("ID do evento: ");
                 int evtId = Integer.parseInt(scanner.nextLine());
-                haras.basicas.Evento evt = gerenciadorEvento.listarEventos().stream().filter(ev -> ev.getId() == evtId).findFirst().orElse(null);
-                if (evt == null) { System.out.println("Evento não encontrado."); return; }
+                haras.basicas.Evento evt = gerenciadorEvento.listarEventos().stream().filter(ev -> ev.getId() == evtId)
+                        .findFirst().orElse(null);
+                if (evt == null) {
+                    System.out.println("Evento não encontrado.");
+                    return;
+                }
                 System.out.print("ID do animal: ");
                 int anId = Integer.parseInt(scanner.nextLine());
-                Animal an = gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == anId).findFirst().orElse(null);
-                if (an == null) { System.out.println("Animal não encontrado."); return; }
+                Animal an = gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == anId).findFirst()
+                        .orElse(null);
+                if (an == null) {
+                    System.out.println("Animal não encontrado.");
+                    return;
+                }
                 gerenciadorEvento.adicionarParticipante(evt, an);
                 System.out.println("Participante adicionado.");
                 break;
@@ -434,28 +452,50 @@ public class ConsoleApp {
             case "1":
                 System.out.print("ID Cliente: ");
                 int cId = Integer.parseInt(scanner.nextLine());
-                Cliente cli = gerenciadorCliente.listarClientes().stream().filter(c -> c.getId() == cId).findFirst().orElse(null);
+                Cliente cli = gerenciadorCliente.listarClientes().stream().filter(c -> c.getId() == cId).findFirst()
+                        .orElse(null);
                 System.out.print("ID Animal: ");
                 int aId = Integer.parseInt(scanner.nextLine());
-                Animal ani = gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == aId).findFirst().orElse(null);
+                Animal ani = gerenciadorAnimal.listarAnimais().stream().filter(a -> a.getId() == aId).findFirst()
+                        .orElse(null);
                 System.out.print("ID Serviço: ");
                 int sId = Integer.parseInt(scanner.nextLine());
-                Servico serv = gerenciadorServico.listarServicos().stream().filter(s -> s.getId() == sId).findFirst().orElse(null);
-                if (cli == null || ani == null || serv == null) { System.out.println("Dados inválidos."); return; }
+                Servico serv = gerenciadorServico.listarServicos().stream().filter(s -> s.getId() == sId).findFirst()
+                        .orElse(null);
+                if (cli == null || ani == null || serv == null) {
+                    System.out.println("Dados inválidos.");
+                    return;
+                }
                 System.out.print("Início (yyyy-MM-dd): ");
-                java.util.Date dtIni; try { dtIni = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine()); } catch (java.text.ParseException e) { System.out.println("Data inválida."); return; }
+                java.util.Date dtIni;
+                try {
+                    dtIni = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine());
+                } catch (java.text.ParseException e) {
+                    System.out.println("Data inválida.");
+                    return;
+                }
                 System.out.print("Fim (yyyy-MM-dd): ");
-                java.util.Date dtFim; try { dtFim = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine()); } catch (java.text.ParseException e) { System.out.println("Data inválida."); return; }
+                java.util.Date dtFim;
+                try {
+                    dtFim = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine());
+                } catch (java.text.ParseException e) {
+                    System.out.println("Data inválida.");
+                    return;
+                }
                 System.out.print("Status: ");
                 String status = scanner.nextLine();
                 haras.basicas.Contrato ct = new haras.basicas.Contrato(cli, ani, serv, dtIni, dtFim, status);
                 gerenciadorContrato.cadastrarContrato(ct);
-                // C1: baia
                 if ("Hospedagem".equalsIgnoreCase(serv.getTipo())) {
                     System.out.print("Número da baia para ocupar: ");
                     int num = Integer.parseInt(scanner.nextLine());
                     Baia b = localizarOuCriarBaia(num);
-                    try { gerenciadorBaia.alocarAnimalEmBaia(b, ani); System.out.println("Baia ocupada."); } catch (HarasException ex) { System.out.println(ex.getMessage()); }
+                    try {
+                        gerenciadorBaia.alocarAnimalEmBaia(b, ani);
+                        System.out.println("Baia ocupada.");
+                    } catch (HarasException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                 }
                 System.out.println("Contrato cadastrado com ID: " + ct.getId());
                 break;
@@ -465,14 +505,22 @@ public class ConsoleApp {
             case "3":
                 System.out.print("ID do contrato: ");
                 int idc = Integer.parseInt(scanner.nextLine());
-                haras.basicas.Contrato cto = gerenciadorContrato.listarContratos().stream().filter(c -> c.getId() == idc).findFirst().orElse(null);
-                if (cto == null) { System.out.println("Não encontrado."); return; }
-                // se hospedagem, liberar baia
+                haras.basicas.Contrato cto = gerenciadorContrato.listarContratos().stream()
+                        .filter(c -> c.getId() == idc).findFirst().orElse(null);
+                if (cto == null) {
+                    System.out.println("Não encontrado.");
+                    return;
+                }
                 if ("Hospedagem".equalsIgnoreCase(cto.getServico().getTipo())) {
                     System.out.print("Número da baia a liberar: ");
                     int num = Integer.parseInt(scanner.nextLine());
                     Baia b = localizarOuCriarBaia(num);
-                    try { gerenciadorBaia.liberarBaia(b); System.out.println("Baia liberada."); } catch (HarasException ex) { System.out.println(ex.getMessage()); }
+                    try {
+                        gerenciadorBaia.liberarBaia(b);
+                        System.out.println("Baia liberada.");
+                    } catch (HarasException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                 }
                 boolean rem = gerenciadorContrato.excluirContrato(idc);
                 System.out.println(rem ? "Excluído." : "Não removido.");
@@ -493,16 +541,30 @@ public class ConsoleApp {
             case "1":
                 System.out.print("ID Animal: ");
                 int aId = Integer.parseInt(scanner.nextLine());
-                Animal an = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == aId).findFirst().orElse(null);
+                Animal an = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == aId).findFirst()
+                        .orElse(null);
                 System.out.print("ID Veterinário (ID de Colaborador do tipo Veterinario): ");
                 int vId = Integer.parseInt(scanner.nextLine());
-                haras.basicas.Veterinario vet = (haras.basicas.Veterinario) gerenciadorColaborador.listarColaboradores().stream().filter(c -> c.getId() == vId && c instanceof haras.basicas.Veterinario).findFirst().orElse(null);
-                if (an == null || vet == null) { System.out.println("Dados inválidos."); return; }
+                Colaborador vet = gerenciadorColaborador.listarColaboradores()
+                        .stream()
+                        .filter(c -> c.getId() == vId && "Veterinario".equalsIgnoreCase(c.getCargo()))
+                        .findFirst()
+                        .orElse(null);
+                if (an == null || vet == null) {
+                    System.out.println("Dados inválidos.");
+                    return;
+                }
                 System.out.print("Data (yyyy-MM-dd): ");
-                java.util.Date dt; try { dt = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine()); } catch (java.text.ParseException e) { System.out.println("Data inválida."); return; }
+                java.util.Date dt;
+                try {
+                    dt = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine());
+                } catch (java.text.ParseException e) {
+                    System.out.println("Data inválida.");
+                    return;
+                }
                 System.out.print("Descrição: ");
                 String desc = scanner.nextLine();
-                haras.basicas.AtendimentoVeterinario at = new haras.basicas.AtendimentoVeterinario(an, vet, dt, desc);
+                haras.basicas.AtendimentoVeterinario at = new haras.basicas.AtendimentoVeterinario(an, (Veterinario) vet, dt, desc);
                 gerenciadorAtendimento.registrarAtendimento(at);
                 System.out.println("Registrado com ID: " + at.getId());
                 break;
@@ -531,13 +593,25 @@ public class ConsoleApp {
             case "1":
                 System.out.print("ID Animal: ");
                 int aId = Integer.parseInt(scanner.nextLine());
-                Animal an = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == aId).findFirst().orElse(null);
+                Animal an = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == aId).findFirst()
+                        .orElse(null);
                 System.out.print("ID Treinador (ID de Colaborador do tipo Treinador): ");
                 int tId = Integer.parseInt(scanner.nextLine());
-                haras.basicas.Treinador tr = (haras.basicas.Treinador) gerenciadorColaborador.listarColaboradores().stream().filter(c -> c.getId() == tId && c instanceof haras.basicas.Treinador).findFirst().orElse(null);
-                if (an == null || tr == null) { System.out.println("Dados inválidos."); return; }
+                haras.basicas.Treinador tr = (haras.basicas.Treinador) gerenciadorColaborador.listarColaboradores()
+                        .stream().filter(c -> c.getId() == tId && c instanceof haras.basicas.Treinador).findFirst()
+                        .orElse(null);
+                if (an == null || tr == null) {
+                    System.out.println("Dados inválidos.");
+                    return;
+                }
                 System.out.print("Data (yyyy-MM-dd): ");
-                java.util.Date dt; try { dt = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine()); } catch (java.text.ParseException e) { System.out.println("Data inválida."); return; }
+                java.util.Date dt;
+                try {
+                    dt = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(scanner.nextLine());
+                } catch (java.text.ParseException e) {
+                    System.out.println("Data inválida.");
+                    return;
+                }
                 System.out.print("Tipo: ");
                 String tipo = scanner.nextLine();
                 System.out.print("Observações: ");
@@ -605,8 +679,12 @@ public class ConsoleApp {
                 b = localizarOuCriarBaia(num);
                 System.out.print("ID Animal: ");
                 int aId = Integer.parseInt(scanner.nextLine());
-                Animal a = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == aId).findFirst().orElse(null);
-                if (a == null) { System.out.println("Animal inválido."); return; }
+                Animal a = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == aId).findFirst()
+                        .orElse(null);
+                if (a == null) {
+                    System.out.println("Animal inválido.");
+                    return;
+                }
                 gerenciadorBaia.alocarAnimalEmBaia(b, a);
                 System.out.println("Ocupada.");
                 break;
@@ -649,7 +727,8 @@ public class ConsoleApp {
                 baias.values().stream().filter(b -> b.getAnimalOcupante() != null).forEach(b -> System.out.println(b));
                 break;
             case "5":
-                double total = gerenciadorContrato.listarContratos().stream().mapToDouble(c -> c.getServico().getValor()).sum();
+                double total = gerenciadorContrato.listarContratos().stream()
+                        .mapToDouble(c -> c.getServico().getValor()).sum();
                 System.out.println("Faturamento estimado: R$ " + total);
                 break;
             default:
@@ -657,36 +736,7 @@ public class ConsoleApp {
         }
     }
 
-    private void menuReproducao(Scanner scanner) {
-        System.out.println("=== Reprodução (RN2) ===");
-        System.out.print("ID Pai (animal): ");
-        int paiId = Integer.parseInt(scanner.nextLine());
-        System.out.print("ID Mãe (animal): ");
-        int maeId = Integer.parseInt(scanner.nextLine());
-        Animal pai = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == paiId).findFirst().orElse(null);
-        Animal mae = gerenciadorAnimal.listarAnimais().stream().filter(x -> x.getId() == maeId).findFirst().orElse(null);
-        if (pai == null || mae == null) { System.out.println("Animais inválidos."); return; }
-        if (!pai.isReprodutor() || !mae.isReprodutor()) {
-            System.out.println("RN2: Reprodução apenas para animais marcados como reprodutores.");
-            return;
-        }
-        System.out.print("Tipo do serviço: ");
-        String tipo = scanner.nextLine();
-        System.out.print("Descrição: ");
-        String desc = scanner.nextLine();
-        System.out.print("Valor: ");
-        double valor = Double.parseDouble(scanner.nextLine());
-        try {
-            gerenciadorReproducao.realizarReproducao(0, tipo, desc, valor, pai, mae);
-            System.out.println("Reprodução registrada.");
-        } catch (HarasException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CsvValidationException, NumberFormatException {
         new ConsoleApp().iniciar();
     }
 }
-
-

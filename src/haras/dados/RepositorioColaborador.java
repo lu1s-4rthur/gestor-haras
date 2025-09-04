@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 public class RepositorioColaborador {
     private String arquivo = "dados/data/colaboradores.dat";
@@ -48,7 +49,7 @@ public class RepositorioColaborador {
         }
     }
 
-    public List<Colaborador> carregarColaboradoresCSV() throws IOException {
+    public List<Colaborador> carregarColaboradoresCSV() throws IOException, CsvValidationException, NumberFormatException {
         List<Colaborador> colaboradores = new ArrayList<>();
         File file = new File(arquivoCsv);
         if (!file.exists()) return colaboradores;

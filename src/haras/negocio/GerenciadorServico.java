@@ -7,6 +7,8 @@ import haras.exception.HarasException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.opencsv.exceptions.CsvValidationException;
+
 public class GerenciadorServico {
     private RepositorioServico repositorio = new RepositorioServico();
 
@@ -16,7 +18,6 @@ public class GerenciadorServico {
         for (Servico s : servicos) {
             relatorio.append("ID: ").append(s.getId())
                 .append(" | Tipo: ").append(s.getTipo())
-                .append(" | Descrição: ").append(s.getDescricao())
                 .append(" | Valor: R$").append(s.getValor())
                 .append("\n");
         }
@@ -72,12 +73,11 @@ public class GerenciadorServico {
         return new ArrayList<>(servicos);
     }
 
-    // ===== CSV helpers =====
     public void exportarCsv() throws IOException {
         repositorio.salvarServicosCSV(servicos);
     }
 
-    public void importarCsv() throws IOException {
+    public void importarCsv() throws IOException, CsvValidationException, NumberFormatException {
         servicos = repositorio.carregarServicosCSV();
         salvar();
     }

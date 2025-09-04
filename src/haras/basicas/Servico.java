@@ -6,13 +6,11 @@ public class Servico implements Serializable {
     private static int contador = 1;
     private int id;
     private String tipo;
-    private String descricao;
     private double valor;
 
-    public Servico(String tipo, String descricao, double valor) {
+    public Servico(String tipo, double valor) {
         this.id = contador++;
         this.tipo = tipo;
-        this.descricao = descricao;
         this.valor = valor;
     }
 
@@ -30,14 +28,6 @@ public class Servico implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public double getValor() {

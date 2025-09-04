@@ -4,8 +4,8 @@ public class Reproducao extends Servico {
     private Animal pai;
     private Animal mae;
 
-    public Reproducao(String tipo, String descricao, double valor, Animal pai, Animal mae) {
-        super(tipo, descricao, valor);
+    public Reproducao(String tipo, double valor, Animal pai, Animal mae) {
+        super(tipo,valor);
         this.pai = pai;
         this.mae = mae;
     }

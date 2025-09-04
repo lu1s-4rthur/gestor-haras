@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 public class RepositorioServico {
     private String arquivo = "dados/data/servicos.dat";
@@ -35,14 +36,13 @@ public class RepositorioServico {
                 writer.writeNext(new String[]{
                     String.valueOf(s.getId()),
                     s.getTipo(),
-                    s.getDescricao(),
                     String.valueOf(s.getValor())
                 });
             }
         }
     }
 
-    public List<Servico> carregarServicosCSV() throws IOException {
+    public List<Servico> carregarServicosCSV() throws IOException, CsvValidationException, NumberFormatException {
         List<Servico> servicos = new ArrayList<>();
         File file = new File(arquivoCsv);
         if (!file.exists()) return servicos;
@@ -54,9 +54,8 @@ public class RepositorioServico {
                 if (linha.length < 4) continue;
                 int id = Integer.parseInt(linha[0]);
                 String tipo = linha[1];
-                String descricao = linha[2];
-                double valor = Double.parseDouble(linha[3]);
-                Servico s = new Servico(tipo, descricao, valor);
+                double valor = Double.parseDouble(linha[2]);
+                Servico s = new Servico(tipo, valor);
                 s.setId(id);
                 servicos.add(s);
             }

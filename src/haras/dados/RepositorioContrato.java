@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.function.Function;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 public class RepositorioContrato {
     private String arquivo = "dados/data/contratos.dat";
@@ -54,7 +55,7 @@ public class RepositorioContrato {
 
     public List<Contrato> carregarContratosCSV(Function<Integer, Cliente> resolveCliente,
                                                Function<Integer, Animal> resolveAnimal,
-                                               Function<Integer, Servico> resolveServico) throws IOException {
+                                               Function<Integer, Servico> resolveServico) throws IOException, CsvValidationException, NumberFormatException {
         List<Contrato> contratos = new ArrayList<>();
         File file = new File(arquivoCsv);
         if (!file.exists()) return contratos;

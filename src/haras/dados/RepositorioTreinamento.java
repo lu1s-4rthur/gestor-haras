@@ -9,10 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 public class RepositorioTreinamento {
     private String arquivo = "dados/data/treinamentos.dat";
@@ -52,7 +52,7 @@ public class RepositorioTreinamento {
     }
 
     public List<Treinamento> carregarTreinamentosCSV(Function<Integer, Animal> resolveAnimal,
-                                                     Function<Integer, Treinador> resolveTreinador) throws IOException {
+                                                     Function<Integer, Treinador> resolveTreinador) throws IOException, CsvValidationException, NumberFormatException {
         List<Treinamento> treinamentos = new ArrayList<>();
         File file = new File(arquivoCsv);
         if (!file.exists()) return treinamentos;
