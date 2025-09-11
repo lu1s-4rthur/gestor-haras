@@ -177,6 +177,10 @@ public class Fachada {
         gerenciadorBaia.retirarBaiaDeManutencao(baia);
     }
 
+    public List<Baia> listarBaias() {
+        return gerenciadorBaia.listarBaias();
+    }
+
     public void exportarTodosCsv() throws IOException {
         gerenciadorAnimal.exportarCsv();
         gerenciadorCliente.exportarCsv();

@@ -550,10 +550,11 @@ public class SistemaHaras {
 
     public void listarBaias() {
         System.out.println("=== Lista de Baias ===");
-        if (baias.isEmpty()) {
+        List<Baia> listaBaias = fachada.listarBaias();
+        if (listaBaias.isEmpty()) {
             System.out.println("Nenhuma baia cadastrada.");
         } else {
-            baias.values().forEach(System.out::println);
+            listaBaias.forEach(System.out::println);
         }
     }
 
