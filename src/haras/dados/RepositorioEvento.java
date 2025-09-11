@@ -18,7 +18,7 @@ public class RepositorioEvento {
     private String arquivoCsv = "dados/data/eventos.csv";
 
     public void salvarEventos(List<Evento> eventos) throws IOException {
-        new File("dados").mkdirs();
+        new File("dados/data").mkdirs();
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             oos.writeObject(eventos);
         }

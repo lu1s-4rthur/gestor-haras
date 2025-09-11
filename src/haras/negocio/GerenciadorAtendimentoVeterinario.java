@@ -49,7 +49,6 @@ public class GerenciadorAtendimentoVeterinario {
         return removido;
     }
 
-    // ===== CSV helpers =====
     public void exportarCsv() throws IOException {
         repositorio.salvarAtendimentosCSV(atendimentos);
     }

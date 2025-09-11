@@ -19,7 +19,7 @@ public class RepositorioAtendimentoVeterinario {
     private String arquivoCsv = "dados/data/atendimentos.csv";
 
     public void salvarAtendimentos(List<AtendimentoVeterinario> atendimentos) throws IOException {
-        new File("dados").mkdirs();
+        new File("dados/data").mkdirs();
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             oos.writeObject(atendimentos);
         }

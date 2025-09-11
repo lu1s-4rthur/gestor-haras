@@ -1,9 +1,6 @@
 package haras.dados;
 
-import haras.basicas.Contrato;
-import haras.basicas.Animal;
-import haras.basicas.Cliente;
-import haras.basicas.Servico;
+import haras.basicas.*;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +17,7 @@ public class RepositorioContrato {
     private String arquivoCsv = "dados/data/contratos.csv";
 
     public void salvarContratos(List<Contrato> contratos) throws IOException {
-        new File("dados").mkdirs();
+        new File("dados/data").mkdirs();
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             oos.writeObject(contratos);
         }

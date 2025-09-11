@@ -61,7 +61,6 @@ public class GerenciadorContrato {
         return contratos;
     }
 
-    // ===== CSV helpers =====
     public void exportarCsv() throws IOException {
         repositorio.salvarContratosCSV(contratos);
     }

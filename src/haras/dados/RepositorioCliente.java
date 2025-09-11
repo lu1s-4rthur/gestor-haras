@@ -14,7 +14,7 @@ public class RepositorioCliente {
     private String arquivoCsv = "dados/data/clientes.csv";
 
     public void salvarClientes(List<Cliente> clientes) throws IOException {
-        new File("dados").mkdirs();
+        new File("dados/data").mkdirs();
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             oos.writeObject(clientes);
         }

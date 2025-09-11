@@ -16,7 +16,7 @@ public class RepositorioColaborador {
     private String arquivoCsv = "dados/data/colaboradores.csv";
 
     public void salvarColaboradores(List<Colaborador> colaboradores) throws IOException {
-        new File("dados").mkdirs();
+        new File("dados/data").mkdirs();
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             oos.writeObject(colaboradores);
         }

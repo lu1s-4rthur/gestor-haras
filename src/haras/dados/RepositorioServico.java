@@ -14,7 +14,7 @@ public class RepositorioServico {
     private String arquivoCsv = "dados/data/servicos.csv";
 
     public void salvarServicos(List<Servico> servicos) throws IOException {
-        new File("dados").mkdirs();
+        new File("dados/data").mkdirs();
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             oos.writeObject(servicos);
         }
@@ -31,7 +31,7 @@ public class RepositorioServico {
     public void salvarServicosCSV(List<Servico> servicos) throws IOException {
         new File("dados/data").mkdirs();
         try (CSVWriter writer = new CSVWriter(new FileWriter(arquivoCsv))) {
-            writer.writeNext(new String[]{"id","tipo","descricao","valor"});
+            writer.writeNext(new String[]{"id","tipo","valor"});
             for (Servico s : servicos) {
                 writer.writeNext(new String[]{
                     String.valueOf(s.getId()),
@@ -51,7 +51,7 @@ public class RepositorioServico {
             boolean header = false;
             while ((linha = reader.readNext()) != null) {
                 if (!header) { header = true; continue; }
-                if (linha.length < 4) continue;
+                if (linha.length < 3) continue;
                 int id = Integer.parseInt(linha[0]);
                 String tipo = linha[1];
                 double valor = Double.parseDouble(linha[2]);

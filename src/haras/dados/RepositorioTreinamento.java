@@ -19,7 +19,7 @@ public class RepositorioTreinamento {
     private String arquivoCsv = "dados/data/treinamentos.csv";
 
     public void salvarTreinamentos(List<Treinamento> treinamentos) throws IOException {
-        new File("dados").mkdirs();
+        new File("dados/data").mkdirs();
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo))) {
             oos.writeObject(treinamentos);
         }
